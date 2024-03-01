@@ -1,8 +1,8 @@
 {
-  "name": "mdast-util-directive",
+  "name": "mdast-util-lemmy-spoiler",
   "version": "3.0.0",
-  "description": "mdast extension to parse and serialize generic directives (`:cite[smith04]`)",
-  "license": "MIT",
+  "description": "mdast extension to parse and serialize lemmy spoilers",
+  "license": "AGPL-3.0-only",
   "keywords": [
     "unist",
     "mdast",
@@ -11,21 +11,12 @@
     "utility",
     "markdown",
     "markup",
-    "generic",
-    "directive",
-    "container",
-    "extension"
+    "extension",
+    "lemmy",
+    "spoiler"
   ],
-  "repository": "syntax-tree/mdast-util-directive",
-  "bugs": "https://github.com/syntax-tree/mdast-util-directive/issues",
-  "funding": {
-    "type": "opencollective",
-    "url": "https://opencollective.com/unified"
-  },
-  "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
-  "contributors": [
-    "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
-  ],
+  "repository": "aeharding/mdast-util-lemmy-spoiler",
+  "bugs": "https://github.com/aeharding/mdast-util-lemmy-spoiler/issues",
   "sideEffects": false,
   "type": "module",
   "exports": "./index.js",
@@ -41,8 +32,7 @@
     "mdast-util-from-markdown": "^2.0.0",
     "mdast-util-to-markdown": "^2.0.0",
     "parse-entities": "^4.0.0",
-    "stringify-entities": "^4.0.0",
-    "unist-util-visit-parents": "^6.0.0"
+    "stringify-entities": "^4.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

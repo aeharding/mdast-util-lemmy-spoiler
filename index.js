@@ -1,2 +1,2 @@
 // Note: types exposed from `index.d.ts`.
-export {directiveFromMarkdown, directiveToMarkdown} from './lib/index.js'
+export {spoilerFromMarkdown} from './lib/index.js'
