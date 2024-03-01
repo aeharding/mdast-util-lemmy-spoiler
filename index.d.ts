@@ -1,54 +1,47 @@
 import type {Data, Parent, BlockContent, DefinitionContent} from 'mdast'
 
-export {directiveFromMarkdown, directiveToMarkdown} from './lib/index.js'
+export {spoilerFromMarkdown} from './lib/index.js'
 
 /**
- * Fields shared by directives.
+ * Fields shared by spoilers.
  */
-interface DirectiveFields {
+interface SpoilerFields {
   /**
-   * Directive name.
+   * Spoiler name.
    */
   name: string
 }
 
 /**
- * Markdown directive (container form).
+ * Markdown spoiler.
  */
-export interface ContainerDirective extends Parent, DirectiveFields {
+export interface Spoiler extends Parent, SpoilerFields {
   /**
-   * Node type of container directive.
+   * Node type of container spoiler.
    */
-  type: 'containerDirective'
+  type: 'spoiler'
 
   /**
-   * Children of container directive.
+   * Children of container spoiler.
    */
   children: Array<BlockContent | DefinitionContent>
 
   /**
-   * Data associated with the mdast container directive.
+   * Data associated with the mdast container spoiler.
    */
-  data?: ContainerDirectiveData | undefined
+  data?: SpoilerData | undefined
 }
 
 /**
- * Info associated with mdast container directive nodes by the ecosystem.
+ * Info associated with mdast container spoiler nodes by the ecosystem.
  */
-export interface ContainerDirectiveData extends Data {}
-
-/**
- * Union of registered mdast directive nodes.
- *
- * It is not possible to register custom mdast directive node types.
- */
-export type Directives = ContainerDirective
+export interface SpoilerData extends Data {}
 
 // Add custom data tracked to turn a syntax tree into markdown.
 declare module 'mdast-util-to-markdown' {
   interface ConstructNameMap {
     /**
-     * Whole container directive.
+     * Whole container spoiler.
      *
      * ```markdown
      * > | :::a
@@ -57,7 +50,7 @@ declare module 'mdast-util-to-markdown' {
      *     ^^^
      * ```
      */
-    containerDirective: 'containerDirective'
+    spoiler: 'spoiler'
   }
 }
 
@@ -65,17 +58,17 @@ declare module 'mdast-util-to-markdown' {
 declare module 'mdast' {
   interface BlockContentMap {
     /**
-     * Directive in flow content (such as in the root document, or block
+     * Spoiler in flow content (such as in the root document, or block
      * quotes), which contains further flow content.
      */
-    containerDirective: ContainerDirective
+    spoiler: Spoiler
   }
 
   interface RootContentMap {
     /**
-     * Directive in flow content (such as in the root document, or block
+     * Spoiler in flow content (such as in the root document, or block
      * quotes), which contains further flow content.
      */
-    containerDirective: ContainerDirective
+    spoiler: Spoiler
   }
 }
