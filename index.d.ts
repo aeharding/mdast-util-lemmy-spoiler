@@ -1,10 +1,4 @@
-import type {
-  Data,
-  Parent,
-  BlockContent,
-  DefinitionContent,
-  PhrasingContent
-} from 'mdast'
+import type {Data, Parent, BlockContent, DefinitionContent} from 'mdast'
 
 export {directiveFromMarkdown, directiveToMarkdown} from './lib/index.js'
 
@@ -16,11 +10,6 @@ interface DirectiveFields {
    * Directive name.
    */
   name: string
-
-  /**
-   * Directive attributes.
-   */
-  attributes?: Record<string, string | null | undefined> | null | undefined
 }
 
 /**
@@ -55,16 +44,6 @@ export interface ContainerDirectiveData extends Data {}
  */
 export type Directives = ContainerDirective
 
-// Add custom data tracked to turn markdown into a tree.
-declare module 'mdast-util-from-markdown' {
-  interface CompileData {
-    /**
-     * Attributes for current directive.
-     */
-    directiveAttributes?: Array<[string, string]> | undefined
-  }
-}
-
 // Add custom data tracked to turn a syntax tree into markdown.
 declare module 'mdast-util-to-markdown' {
   interface ConstructNameMap {
@@ -79,17 +58,6 @@ declare module 'mdast-util-to-markdown' {
      * ```
      */
     containerDirective: 'containerDirective'
-
-    /**
-     * Label of a container directive.
-     *
-     * ```markdown
-     * > | :::a[b]
-     *         ^^^
-     *   | :::
-     * ```
-     */
-    containerDirectiveLabel: 'containerDirectiveLabel'
   }
 }
 
@@ -101,21 +69,6 @@ declare module 'mdast' {
      * quotes), which contains further flow content.
      */
     containerDirective: ContainerDirective
-  }
-
-  interface ParagraphData {
-    /**
-     * Field set on the first paragraph which is a child of a container
-     * directive.
-     * When this is `true`, that means the paragraph represents the *label*:
-     *
-     * ```markdown
-     * :::a[This is the label]
-     * This is further things.
-     * :::
-     * ```
-     */
-    directiveLabel?: boolean | null | undefined
   }
 
   interface RootContentMap {

@@ -18,33 +18,14 @@ test('core', async function (t) {
 test('directiveFromMarkdown()', async function (t) {
   await t.test('should support directives (container)', async function () {
     assert.deepEqual(
-      fromMarkdown(':::a[b]{c}\nd', {
+      fromMarkdown(':::a\nd', {
         extensions: [directive()],
         mdastExtensions: [directiveFromMarkdown()]
       }).children[0],
       {
         type: 'containerDirective',
         name: 'a',
-        attributes: {c: ''},
         children: [
-          {
-            type: 'paragraph',
-            data: {directiveLabel: true},
-            children: [
-              {
-                type: 'text',
-                value: 'b',
-                position: {
-                  start: {line: 1, column: 6, offset: 5},
-                  end: {line: 1, column: 7, offset: 6}
-                }
-              }
-            ],
-            position: {
-              start: {line: 1, column: 5, offset: 4},
-              end: {line: 1, column: 8, offset: 7}
-            }
-          },
           {
             type: 'paragraph',
             children: [
@@ -52,20 +33,20 @@ test('directiveFromMarkdown()', async function (t) {
                 type: 'text',
                 value: 'd',
                 position: {
-                  start: {line: 2, column: 1, offset: 11},
-                  end: {line: 2, column: 2, offset: 12}
+                  start: {line: 2, column: 1, offset: 5},
+                  end: {line: 2, column: 2, offset: 6}
                 }
               }
             ],
             position: {
-              start: {line: 2, column: 1, offset: 11},
-              end: {line: 2, column: 2, offset: 12}
+              start: {line: 2, column: 1, offset: 5},
+              end: {line: 2, column: 2, offset: 6}
             }
           }
         ],
         position: {
           start: {line: 1, column: 1, offset: 0},
-          end: {line: 2, column: 2, offset: 12}
+          end: {line: 2, column: 2, offset: 6}
         }
       }
     )
@@ -85,12 +66,10 @@ test('directiveFromMarkdown()', async function (t) {
         {
           type: 'containerDirective',
           name: 'a',
-          attributes: {},
           children: [
             {
               type: 'containerDirective',
               name: 'b',
-              attributes: {},
               children: []
             }
           ]
@@ -186,47 +165,6 @@ test('directiveToMarkdown()', async function (t) {
           {extensions: [directiveToMarkdown()]}
         ),
         ':::a\nb\nc\n:::\n'
-      )
-    }
-  )
-
-  await t.test(
-    'should serialize a directive (container) w/ EOLs in `attributes`',
-    async function () {
-      assert.deepEqual(
-        toMarkdown(
-          {
-            type: 'containerDirective',
-            name: 'a',
-            attributes: {id: 'b', class: 'c d', key: 'e\nf'},
-            children: []
-          },
-          {extensions: [directiveToMarkdown()]}
-        ),
-        ':::a{#b .c.d key="e&#xA;f"}\n:::\n'
-      )
-    }
-  )
-
-  await t.test(
-    'should serialize the first paragraph w/ `data.directiveLabel` as a label in a directive (container)',
-    async function () {
-      assert.deepEqual(
-        toMarkdown(
-          {
-            type: 'containerDirective',
-            name: 'a',
-            children: [
-              {
-                type: 'paragraph',
-                data: {directiveLabel: true},
-                children: [{type: 'text', value: 'b'}]
-              }
-            ]
-          },
-          {extensions: [directiveToMarkdown()]}
-        ),
-        ':::a[b]\n:::\n'
       )
     }
   )
