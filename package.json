@@ -1,6 +1,6 @@
 {
   "name": "mdast-util-lemmy-spoiler",
-  "version": "3.0.0",
+  "version": "1.0.0",
   "description": "mdast extension to parse and serialize lemmy spoilers",
   "license": "AGPL-3.0-only",
   "keywords": [
