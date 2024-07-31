@@ -1,35 +1,19 @@
-import type {Data, Parent, BlockContent, DefinitionContent} from 'mdast'
+import type {Data, Parent} from 'mdast'
 
 export {spoilerFromMarkdown} from './lib/index.js'
 
-/**
- * Fields shared by spoilers.
- */
-interface SpoilerFields {
-  /**
-   * Spoiler name.
-   */
-  name: string
-}
-
-/**
- * Markdown spoiler.
- */
-export interface Spoiler extends Parent, SpoilerFields {
+export interface Details extends Parent {
   /**
    * Node type of container spoiler.
    */
-  type: 'spoiler'
+  type: 'details'
+}
 
+export interface Summary extends Parent {
   /**
-   * Children of container spoiler.
+   * Node type of container spoiler.
    */
-  children: Array<BlockContent | DefinitionContent>
-
-  /**
-   * Data associated with the mdast container spoiler.
-   */
-  data?: SpoilerData | undefined
+  type: 'summary'
 }
 
 /**
@@ -50,7 +34,8 @@ declare module 'mdast-util-to-markdown' {
      *     ^^^
      * ```
      */
-    spoiler: 'spoiler'
+    details: 'details'
+    summary: 'summary'
   }
 }
 
@@ -61,7 +46,8 @@ declare module 'mdast' {
      * Spoiler in flow content (such as in the root document, or block
      * quotes), which contains further flow content.
      */
-    spoiler: Spoiler
+    details: Details
+    summary: Summary
   }
 
   interface RootContentMap {
@@ -69,6 +55,7 @@ declare module 'mdast' {
      * Spoiler in flow content (such as in the root document, or block
      * quotes), which contains further flow content.
      */
-    spoiler: Spoiler
+    details: Details
+    summary: Summary
   }
 }

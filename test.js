@@ -17,14 +17,48 @@ test('core', async function (t) {
 test('spoilerFromMarkdown()', async function (t) {
   await t.test('should support spoilers', async function () {
     assert.deepEqual(
-      fromMarkdown('::: spoiler hi\nd', {
+      fromMarkdown('::: spoiler hi **there**\nd', {
         extensions: [spoiler()],
         mdastExtensions: [spoilerFromMarkdown()]
       }).children[0],
       {
-        type: 'spoiler',
-        name: 'hi',
+        type: 'details',
         children: [
+          {
+            type: 'summary',
+            children: [
+              {
+                type: 'text',
+                value: 'hi ',
+                position: {
+                  start: {line: 1, column: 13, offset: 12},
+                  end: {line: 1, column: 16, offset: 15}
+                }
+              },
+              {
+                type: 'strong',
+                children: [
+                  {
+                    type: 'text',
+                    value: 'there',
+                    position: {
+                      start: {line: 1, column: 18, offset: 17},
+                      end: {line: 1, column: 23, offset: 22}
+                    }
+                  }
+                ],
+                position: {
+                  start: {line: 1, column: 16, offset: 15},
+                  end: {line: 1, column: 25, offset: 24}
+                }
+              }
+            ],
+            data: {hName: 'summary'},
+            position: {
+              start: {line: 1, column: 13, offset: 12},
+              end: {line: 1, column: 25, offset: 24}
+            }
+          },
           {
             type: 'paragraph',
             children: [
@@ -32,20 +66,21 @@ test('spoilerFromMarkdown()', async function (t) {
                 type: 'text',
                 value: 'd',
                 position: {
-                  start: {line: 2, column: 1, offset: 15},
-                  end: {line: 2, column: 2, offset: 16}
+                  start: {line: 2, column: 1, offset: 25},
+                  end: {line: 2, column: 2, offset: 26}
                 }
               }
             ],
             position: {
-              start: {line: 2, column: 1, offset: 15},
-              end: {line: 2, column: 2, offset: 16}
+              start: {line: 2, column: 1, offset: 25},
+              end: {line: 2, column: 2, offset: 26}
             }
           }
         ],
+        data: {hName: 'details'},
         position: {
           start: {line: 1, column: 1, offset: 0},
-          end: {line: 2, column: 2, offset: 16}
+          end: {line: 2, column: 2, offset: 26}
         }
       }
     )
@@ -66,15 +101,26 @@ test('spoilerFromMarkdown()', async function (t) {
       type: 'root',
       children: [
         {
-          type: 'spoiler',
-          name: 'first spoiler',
+          type: 'details',
           children: [
             {
-              type: 'spoiler',
-              name: 'second spoiler',
-              children: []
+              type: 'summary',
+              children: [{type: 'text', value: 'first spoiler'}],
+              data: {hName: 'summary'}
+            },
+            {
+              type: 'details',
+              children: [
+                {
+                  type: 'summary',
+                  children: [{type: 'text', value: 'second spoiler'}],
+                  data: {hName: 'summary'}
+                }
+              ],
+              data: {hName: 'details'}
             }
-          ]
+          ],
+          data: {hName: 'details'}
         }
       ]
     })
